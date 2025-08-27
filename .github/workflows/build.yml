@@ -14,7 +14,7 @@ jobs:
 
     steps:
       - name: Checkout this repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Initialize West (use this repo as ZMK_CONFIG)
         run: |
@@ -27,7 +27,7 @@ jobs:
           west build -s zmk/app -d build/nice_nano_v2_IIGS -b nice_nano_v2 -- -DSHIELD=IIGS
 
       - name: Upload UF2 artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: firmware
           path: build/nice_nano_v2_IIGS/zephyr/*.uf2
