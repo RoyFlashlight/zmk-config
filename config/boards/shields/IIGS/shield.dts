@@ -1,0 +1,32 @@
+/ {
+    // ZMK should use this kscan node for the key matrix
+    chosen { zmk,kscan = &kscan0; };
+
+    /*
+     * TODO: Replace the pins below with YOUR PCB's real pins.
+     * - Use Nordic names P0.xx → write only the number xx after &gpio0
+     *   Example: P0.10 becomes <&gpio0 10 GPIO_ACTIVE_LOW>
+     * - diode-direction: "COL2ROW" or "ROW2COL" (match your PCB diodes)
+     * - The counts of row/col pins must match your matrix size
+     */
+
+    kscan0: kscan {
+        compatible = "zmk,kscan-gpio-matrix";
+
+        // ---- ROW PINS (edit these) ----
+        row-gpios = <&gpio0 10 GPIO_ACTIVE_LOW>,
+                    <&gpio0 11 GPIO_ACTIVE_LOW>,
+                    <&gpio0 12 GPIO_ACTIVE_LOW>;
+
+        // ---- COLUMN PINS (edit these) ----
+        col-gpios = <&gpio0 02 GPIO_ACTIVE_LOW>,
+                    <&gpio0 03 GPIO_ACTIVE_LOW>,
+                    <&gpio0 04 GPIO_ACTIVE_LOW>;
+
+        // Set to your real diode direction
+        diode-direction = "COL2ROW";
+        // Optional: adjust debounce
+        // debounce-press-ms = <5>;
+        // debounce-release-ms = <5>;
+    };
+};
