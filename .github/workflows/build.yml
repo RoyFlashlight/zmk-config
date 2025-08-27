@@ -1,4 +1,4 @@
-name: Build ZMK Firmware
+name: Build ZMK Firmware (no-docker)
 
 on:
   push:
@@ -9,25 +9,28 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    container:
-      image: zmkfirmware/zmk-build-arm:3.3
 
     steps:
       - name: Checkout this repo
         uses: actions/checkout@v4
 
-      - name: Initialize West (use this repo as ZMK_CONFIG)
+      - name: Install build deps
         run: |
-          west init -l config
-          west update
-          west zephyr-export
+          sudo apt-get update
+          sudo apt-get install -y git cmake ninja-build gperf ccache dfu-util \
+            device-tree-compiler wget python3-pip python3-setuptools python3-wheel \
+            xz-utils file make gcc g++ locales
+          sudo locale-gen en_US.UTF-8
 
-      - name: Build (nice_nano_v2 + IIGS shield)
+      - name: Install West + Zephyr Python deps
         run: |
-          west build -s zmk/app -d build/nice_nano_v2_IIGS -b nice_nano_v2 -- -DSHIELD=IIGS
+          pip3 install --user west
+          pip3 install --user -r https://raw.githubusercontent.com/zephyrproject-rtos/zephyr/main/scripts/requirements.txt
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
 
-      - name: Upload UF2 artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: firmware
-          path: build/nice_nano_v2_IIGS/zephyr/*.uf2
+      - name: Install Zephyr SDK
+        run: |
+          ZSDK_VER=0.16.8
+          wget -q https://github.com/zephyrproject-rtos/sdk-ng/releases/download/v${ZSDK_VER}/zephyr-sdk-${ZSDK_VER}_linux-x86_64.tar.xz
+          tar -xJf zephyr-sdk-${ZSDK_VER}_linux-x86_64.tar.xz
+          mv zeph
