@@ -2,14 +2,20 @@
     keymap {
         compatible = "zmk,keymap";
 
-        // This default layer must have (rows × cols) bindings.
-        // Update the number of &kp entries to match your matrix.
+        // 10 rows × 8 columns = 80 bindings, ordered row-major (R0C0..R9C7)
         default_layer {
             bindings = <
-                &kp Q   &kp W   &kp E
-                &kp A   &kp S   &kp D
-                &kp Z   &kp X   &kp C
+                /* R0 */ &kp Q  &kp W  &kp E  &kp R  &kp T  &kp Y  &kp U  &kp I
+                /* R1 */ &kp A  &kp S  &kp D  &kp F  &kp G  &kp H  &kp J  &kp K
+                /* R2 */ &kp Z  &kp X  &kp C  &kp V  &kp B  &kp N  &kp M  &kp COMMA
+                /* R3 */ &kp ONE  &kp TWO  &kp THREE  &kp FOUR  &kp FIVE  &kp SIX  &kp SEVEN  &kp EIGHT
+                /* R4 */ &kp N1  &kp N2  &kp N3  &kp N4  &kp N5  &kp N6  &kp N7  &kp N8
+                /* R5 */ &kp L  &kp SEMI  &kp QUOTE  &kp MINUS  &kp EQUAL  &kp LEFT_BRACE  &kp RIGHT_BRACE  &kp BACKSLASH
+                /* R6 */ &kp TAB  &kp ESC  &kp SPACE  &kp ENTER  &kp BACKSPACE  &kp DELETE  &kp HOME  &kp END
+                /* R7 */ &kp LEFT  &kp DOWN  &kp UP  &kp RIGHT  &kp PG_UP  &kp PG_DN  &kp KP_DIVIDE  &kp KP_MULTIPLY
+                /* R8 */ &kp KP_1  &kp KP_2  &kp KP_3  &kp KP_4  &kp KP_5  &kp KP_6  &kp KP_7  &kp KP_8
+                /* R9 */ &kp F1  &kp F2  &kp F3  &kp F4  &kp F5  &kp F6  &kp F7  &kp F8
             >;
-        }
+        };
     };
 };
