@@ -42,7 +42,6 @@ jobs:
           fi
           "$HOME/zephyr-sdk/setup.sh" -t arm-zephyr-eabi -c
 
-      # ---- The missing pieces ----
       - name: Initialize West (use this repo as ZMK_CONFIG)
         run: |
           west init -l config
@@ -53,16 +52,20 @@ jobs:
         env:
           ZEPHYR_TOOLCHAIN_VARIANT: zephyr
           ZEPHYR_SDK_INSTALL_DIR: $HOME/zephyr-sdk
+          ZMK_CONFIG: ${{ github.workspace }}/config
         run: |
+          set -eux
           west build -s zmk/app \
             -d build/nice_nano_v2_IIGS \
             -b nice_nano_v2 -- \
-            -DSHIELD=IIGS
-
+            -DSHIELD=IIGS \
+            -DZMK_CONFIG="${ZMK_CONFIG}"
 
       - name: Upload UF2 artifact
         uses: actions/upload-artifact@v4
         with:
           name: firmware
           path: build/nice_nano_v2_IIGS/zephyr/*.uf2
+
+
 
