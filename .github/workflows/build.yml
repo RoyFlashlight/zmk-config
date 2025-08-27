@@ -29,8 +29,16 @@ jobs:
           echo "$HOME/.local/bin" >> $GITHUB_PATH
 
       - name: Install Zephyr SDK
+        shell: bash
         run: |
+          set -eux
           ZSDK_VER=0.16.8
           wget -q https://github.com/zephyrproject-rtos/sdk-ng/releases/download/v${ZSDK_VER}/zephyr-sdk-${ZSDK_VER}_linux-x86_64.tar.xz
           tar -xJf zephyr-sdk-${ZSDK_VER}_linux-x86_64.tar.xz
-          mv zeph
+          # move to a stable path; fall back to wildcard if var expansion ever fails
+          if [ -d "zephyr-sdk-${ZSDK_VER}" ]; then
+            mv "zephyr-sdk-${ZSDK_VER}" "$HOME/zephyr-sdk"
+          else
+            mv zephyr-sdk-* "$HOME/zephyr-sdk"
+          fi
+          "$HOME/zephyr-sdk/setup.sh" -t arm-zephyr-eabi -c
