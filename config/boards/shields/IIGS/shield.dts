@@ -1,31 +1,40 @@
 / {
-    // ZMK should use this kscan node for the key matrix
+    // Tell ZMK which kscan node is the keyboard matrix
     chosen { zmk,kscan = &kscan0; };
 
-    /*
-     * TODO: Replace the pins below with YOUR PCB's real pins.
-     * - Use Nordic names P0.xx → write only the number xx after &gpio0
-     *   Example: P0.10 becomes <&gpio0 10 GPIO_ACTIVE_LOW>
-     * - diode-direction: "COL2ROW" or "ROW2COL" (match your PCB diodes)
-     * - The counts of row/col pins must match your matrix size
+    /* 10x8 matrix from your schematic
+     * Rows:  R0..R9  -> P0.14, P1.12, P1.11, P0.15, P0.31, P0.11, P0.26, P0.12, P0.13, P0.17
+     * Cols:  C0..C7  -> P0.10, P0.09, P1.07, P1.06, P1.04, P1.02, P1.01, P1.00
      */
-
     kscan0: kscan {
         compatible = "zmk,kscan-gpio-matrix";
 
-        // ---- ROW PINS (edit these) ----
-        row-gpios = <&gpio0 10 GPIO_ACTIVE_LOW>,
-                    <&gpio0 11 GPIO_ACTIVE_LOW>,
-                    <&gpio0 12 GPIO_ACTIVE_LOW>;
+        // --- ROWS (R0..R9) ---
+        row-gpios = <&gpio0 14 GPIO_ACTIVE_LOW>,  /* R0  -> P0.14 */
+                    <&gpio1 12 GPIO_ACTIVE_LOW>,  /* R1  -> P1.12 */
+                    <&gpio1 11 GPIO_ACTIVE_LOW>,  /* R2  -> P1.11 */
+                    <&gpio0 15 GPIO_ACTIVE_LOW>,  /* R3  -> P0.15 */
+                    <&gpio0 31 GPIO_ACTIVE_LOW>,  /* R4  -> P0.31 */
+                    <&gpio0 11 GPIO_ACTIVE_LOW>,  /* R5  -> P0.11 */
+                    <&gpio0 26 GPIO_ACTIVE_LOW>,  /* R6  -> P0.26 */
+                    <&gpio0 12 GPIO_ACTIVE_LOW>,  /* R7  -> P0.12 */
+                    <&gpio0 13 GPIO_ACTIVE_LOW>,  /* R8  -> P0.13 */
+                    <&gpio0 17 GPIO_ACTIVE_LOW>;  /* R9  -> P0.17 */
 
-        // ---- COLUMN PINS (edit these) ----
-        col-gpios = <&gpio0 02 GPIO_ACTIVE_LOW>,
-                    <&gpio0 03 GPIO_ACTIVE_LOW>,
-                    <&gpio0 04 GPIO_ACTIVE_LOW>;
+        // --- COLUMNS (C0..C7) ---
+        col-gpios = <&gpio0 10 GPIO_ACTIVE_LOW>,  /* C0 -> P0.10 */
+                    <&gpio0  9 GPIO_ACTIVE_LOW>,  /* C1 -> P0.09 */
+                    <&gpio1  7 GPIO_ACTIVE_LOW>,  /* C2 -> P1.07 */
+                    <&gpio1  6 GPIO_ACTIVE_LOW>,  /* C3 -> P1.06 */
+                    <&gpio1  4 GPIO_ACTIVE_LOW>,  /* C4 -> P1.04 */
+                    <&gpio1  2 GPIO_ACTIVE_LOW>,  /* C5 -> P1.02 */
+                    <&gpio1  1 GPIO_ACTIVE_LOW>,  /* C6 -> P1.01 */
+                    <&gpio1  0 GPIO_ACTIVE_LOW>;  /* C7 -> P1.00 */
 
-        // Set to your real diode direction
+        // CHANGE if your diodes are the other way around
         diode-direction = "COL2ROW";
-        // Optional: adjust debounce
+
+        // Optional (uncomment if you need extra debouncing)
         // debounce-press-ms = <5>;
         // debounce-release-ms = <5>;
     };
