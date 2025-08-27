@@ -50,8 +50,15 @@ jobs:
           west zephyr-export
 
       - name: Build (nice_nano_v2 + IIGS shield)
+        env:
+          ZEPHYR_TOOLCHAIN_VARIANT: zephyr
+          ZEPHYR_SDK_INSTALL_DIR: $HOME/zephyr-sdk
         run: |
-          west build -s zmk/app -d build/nice_nano_v2_IIGS -b nice_nano_v2 -- -DSHIELD=IIGS
+          west build -s zmk/app \
+            -d build/nice_nano_v2_IIGS \
+            -b nice_nano_v2 -- \
+            -DSHIELD=IIGS
+
 
       - name: Upload UF2 artifact
         uses: actions/upload-artifact@v4
