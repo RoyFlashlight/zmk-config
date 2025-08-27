@@ -1,0 +1,15 @@
+/ {
+    keymap {
+        compatible = "zmk,keymap";
+
+        // This default layer must have (rows × cols) bindings.
+        // Update the number of &kp entries to match your matrix.
+        default_layer {
+            bindings = <
+                &kp Q   &kp W   &kp E
+                &kp A   &kp S   &kp D
+                &kp Z   &kp X   &kp C
+            >;
+        }
+    };
+};
