@@ -35,10 +35,27 @@ jobs:
           ZSDK_VER=0.16.8
           wget -q https://github.com/zephyrproject-rtos/sdk-ng/releases/download/v${ZSDK_VER}/zephyr-sdk-${ZSDK_VER}_linux-x86_64.tar.xz
           tar -xJf zephyr-sdk-${ZSDK_VER}_linux-x86_64.tar.xz
-          # move to a stable path; fall back to wildcard if var expansion ever fails
           if [ -d "zephyr-sdk-${ZSDK_VER}" ]; then
             mv "zephyr-sdk-${ZSDK_VER}" "$HOME/zephyr-sdk"
           else
             mv zephyr-sdk-* "$HOME/zephyr-sdk"
           fi
           "$HOME/zephyr-sdk/setup.sh" -t arm-zephyr-eabi -c
+
+      # ---- The missing pieces ----
+      - name: Initialize West (use this repo as ZMK_CONFIG)
+        run: |
+          west init -l config
+          west update
+          west zephyr-export
+
+      - name: Build (nice_nano_v2 + IIGS shield)
+        run: |
+          west build -s zmk/app -d build/nice_nano_v2_IIGS -b nice_nano_v2 -- -DSHIELD=IIGS
+
+      - name: Upload UF2 artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: firmware
+          path: build/nice_nano_v2_IIGS/zephyr/*.uf2
+
